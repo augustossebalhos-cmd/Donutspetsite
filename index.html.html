@@ -442,6 +442,7 @@
                 </div>
             </div>
 
+            <!-- LINHA HIPOALERGÊNICA -->
             <div class="section-header text-center" style="margin-top: 80px;">
                 <span class="badge" style="background-color: var(--white); border: 1px solid var(--beige-dark);">Linha Especial</span>
                 <h2>Petiscos Hipoalergênicos</h2>
@@ -456,19 +457,10 @@
                         <h3 class="card-title">Petisco Hipoalergênico</h3>
                         <p class="size-label" style="font-weight: 400; margin-bottom: 5px;">Batata Doce Roxa e Aveia</p>
                         <p class="card-desc">Fácil digestão, rico em fibras e antioxidantes para cães alérgicos.</p>
-                        <span class="size-label">Escolha o tamanho:</span>
-                        <div class="size-grid">
-                            <div class="size-option active" data-size="40" data-price="9.80" onclick="selectSize(this, 'p4')">
-                                <span class="weight">40g</span><span class="price">R$ 9,80</span>
-                            </div>
-                            <div class="size-option" data-size="100" data-price="17.90" onclick="selectSize(this, 'p4')">
-                                <span class="weight">100g</span><span class="price">R$ 17,90</span>
-                            </div>
-                            <div class="size-option" data-size="500" data-price="69.90" onclick="selectSize(this, 'p4')">
-                                <span class="weight">500g</span><span class="price">R$ 69,90</span>
-                            </div>
-                            <div class="size-option" data-size="1000" data-price="99.90" onclick="selectSize(this, 'p4')">
-                                <span class="weight">1kg</span><span class="price">R$ 99,90</span>
+                        <span class="size-label">Tamanho único:</span>
+                        <div class="size-grid" style="grid-template-columns: 1fr;">
+                            <div class="size-option active" data-size="100" data-price="23.90" onclick="selectSize(this, 'p4')">
+                                <span class="weight">100g</span><span class="price">R$ 23,90</span>
                             </div>
                         </div>
                         <button class="btn-add-cart" onclick="addToCart('p4', 'Batata Doce Roxa e Aveia')">
@@ -483,19 +475,10 @@
                         <h3 class="card-title">Petisco Hipoalergênico</h3>
                         <p class="size-label" style="font-weight: 400; margin-bottom: 5px;">Mandioca, Cenoura e Chia</p>
                         <p class="card-desc">Livre de alérgenos comuns, focado no bem-estar e na sensibilidade digestiva.</p>
-                        <span class="size-label">Escolha o tamanho:</span>
-                        <div class="size-grid">
-                            <div class="size-option active" data-size="40" data-price="9.80" onclick="selectSize(this, 'p5')">
-                                <span class="weight">40g</span><span class="price">R$ 9,80</span>
-                            </div>
-                            <div class="size-option" data-size="100" data-price="17.90" onclick="selectSize(this, 'p5')">
-                                <span class="weight">100g</span><span class="price">R$ 17,90</span>
-                            </div>
-                            <div class="size-option" data-size="500" data-price="69.90" onclick="selectSize(this, 'p5')">
-                                <span class="weight">500g</span><span class="price">R$ 69,90</span>
-                            </div>
-                            <div class="size-option" data-size="1000" data-price="99.90" onclick="selectSize(this, 'p5')">
-                                <span class="weight">1kg</span><span class="price">R$ 99,90</span>
+                        <span class="size-label">Tamanho único:</span>
+                        <div class="size-grid" style="grid-template-columns: 1fr;">
+                            <div class="size-option active" data-size="100" data-price="23.90" onclick="selectSize(this, 'p5')">
+                                <span class="weight">100g</span><span class="price">R$ 23,90</span>
                             </div>
                         </div>
                         <button class="btn-add-cart" onclick="addToCart('p5', 'Mandioca, Cenoura e Chia')">
@@ -661,11 +644,10 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS MUDADOS PARA GARANTIR FUNCIONAMENTO TOTAL DO CARRINHO -->
     <script>
-        let lastScrollY = window.scrollY;
+        // Funcionalidade de scroll para mudar a cor do Header
         const header = document.getElementById('main-header');
-
         window.addEventListener('scroll', () => {
             if (window.scrollY > 80) {
                 header.classList.add('scrolled');
@@ -674,6 +656,7 @@
             }
         });
 
+        // Carrossel
         let currentSlide = 0;
         const slides = document.querySelectorAll('.carousel-slide');
         let slideInterval;
@@ -682,46 +665,38 @@
             slides.forEach(slide => slide.classList.remove('active'));
             slides[index].classList.add('active');
         }
-
         function forceNextSlide() {
             currentSlide = (currentSlide + 1) % slides.length;
             showSlide(currentSlide);
         }
-
         function forcePrevSlide() {
             currentSlide = (currentSlide - 1 + slides.length) % slides.length;
             showSlide(currentSlide);
         }
-
         function nextSlide(event) {
             event.stopPropagation(); 
             forceNextSlide();
             resetSlideTimer();
         }
-
         function prevSlide(event) {
             event.stopPropagation();
             forcePrevSlide();
             resetSlideTimer();
         }
-
-        function startSlideTimer() {
-            slideInterval = setInterval(forceNextSlide, 5000); 
-        }
-
-        function resetSlideTimer() {
-            clearInterval(slideInterval);
-            startSlideTimer();
-        }
-
-        function scrollToProducts() {
-            document.getElementById('produtos').scrollIntoView({ behavior: 'smooth' });
-        }
-
+        function startSlideTimer() { slideInterval = setInterval(forceNextSlide, 5000); }
+        function resetSlideTimer() { clearInterval(slideInterval); startSlideTimer(); }
+        function scrollToProducts() { document.getElementById('produtos').scrollIntoView({ behavior: 'smooth' }); }
+        
         startSlideTimer();
 
+        // ----------------------------------------------------
+        // LÓGICA DO CARRINHO
+        // ----------------------------------------------------
+
+        // Formatação de Dinheiro Seguro para R$
         const formatMoney = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+        // Seleção de Tamanho
         function selectSize(element, productId) {
             const card = document.getElementById(`product-${productId}`);
             const options = card.querySelectorAll('.size-option');
@@ -729,8 +704,9 @@
             element.classList.add('active');
         }
 
-        let cart = [];
+        let cart = []; // Lista de itens no carrinho
 
+        // Função de adicionar ao carrinho
         function addToCart(productId, productName) {
             const card = document.getElementById(`product-${productId}`);
             const activeOption = card.querySelector('.size-option.active');
@@ -748,22 +724,26 @@
                 cart.push({ id: productId, name: productName, size: size, price: price, qty: 1 });
             }
 
-            updateCartUI();
+            updateCartUI(); // Atualiza painel do carrinho
             
+            // Animação no ícone do carrinho
             const cartIcon = document.querySelector('.cart-icon');
-            cartIcon.style.transform = 'scale(1.1)';
-            setTimeout(() => cartIcon.style.transform = 'scale(1)', 150);
+            cartIcon.style.transform = 'scale(1.2)';
+            setTimeout(() => cartIcon.style.transform = 'scale(1)', 200);
             
+            // Abre o carrinho lateral caso esteja fechado
             if(!document.getElementById('cart-sidebar').classList.contains('active')) {
                 toggleCart();
             }
         }
 
+        // Remover item do carrinho
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCartUI();
         }
 
+        // Atualizar os visuais do carrinho no site (Badge e Lista Lateral)
         function updateCartUI() {
             const container = document.getElementById('cart-items-container');
             const badge = document.getElementById('cart-count-badge');
@@ -786,7 +766,7 @@
                                 <h4>${item.qty}x ${item.name}</h4>
                                 <p>${sizeLabel} - ${formatMoney(item.price)}</p>
                             </div>
-                            <button class="remove-item" onclick="removeFromCart(${index})">
+                            <button class="remove-item" onclick="removeFromCart(${index})" title="Remover Item">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
@@ -797,29 +777,43 @@
             totalSpan.innerText = formatMoney(total);
         }
 
+        // Abre e Fecha a aba do carrinho
         function toggleCart() {
             document.getElementById('cart-sidebar').classList.toggle('active');
             document.getElementById('cart-overlay').classList.toggle('active');
         }
 
+        // LÓGICA DE FINALIZAR NO WHATSAPP REFEITA COM SUCESSO E GARANTIA (MENSAGEM AUTOMÁTICA FORMATA)
         function checkoutWhatsApp() {
             if (cart.length === 0) {
-                alert("Sua cesta está vazia!");
+                alert("Seu carrinho está vazio! Adicione alguns petiscos deliciosos antes de finalizar o pedido.");
                 return;
             }
 
-            let message = "Olá! Gostaria de pedir:\n\n";
+            // Cabeçalho da Mensagem
+            let message = "🐾 *Novo Pedido - Donuts Pet* 🐾\n\nOlá! Gostaria de fazer o seguinte pedido:\n\n";
             let total = 0;
 
+            // Lista cada item do carrinho formatado na mensagem
             cart.forEach(item => {
                 const sizeLabel = item.size == "1000" ? "1kg" : `${item.size}g`;
-                message += `- ${item.qty}x Petisco ${sizeLabel} (${item.name})\n`;
-                total += item.price * item.qty;
+                const itemTotal = item.price * item.qty;
+                
+                message += `▪️ ${item.qty}x ${item.name} (${sizeLabel})\n`;
+                message += `   Valor: ${formatMoney(itemTotal)}\n\n`;
+                
+                total += itemTotal;
             });
 
-            message += `\n*Total estimado: ${formatMoney(total)}*\n\nPodemos confirmar o pedido?`;
+            // Rodapé da Mensagem
+            message += `🏷️ *TOTAL ESTIMADO: ${formatMoney(total)}*\n\nPodemos confirmar o pedido?`;
             
-            window.open(`https://wa.me/5548984338820?text=${encodeURIComponent(message)}`, '_blank');
+            // Link oficial e seguro do WhatsApp API
+            const whatsappNumber = "5548984338820";
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(message)}`;
+            
+            // Usar window.location.href é muito mais seguro para redirecionar em celulares do que window.open
+            window.location.href = whatsappUrl;
         }
     </script>
 </body>
